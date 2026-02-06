@@ -14,14 +14,30 @@ dotenv.config();
 const app = express();
 const httpServer = createServer(app);
 
+// 👇 1. กำหนดรายชื่อเว็บที่อนุญาตให้เข้าใช้งาน (แก้ตรงนี้จุดเดียว)
+const allowedOrigins = [
+  "http://localhost:5173",                       // เครื่องเราเอง
+  "https://coffee-ordering-system-nine.vercel.app", // เว็บ Vercel ของคุณ (เอามาจาก Error Log)
+  "https://coffee-ordering-system.vercel.app"       // เผื่อไว้
+];
+
+// 👇 2. ตั้งค่า CORS ของ Socket.IO (Real-time)
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: allowedOrigins, // ใช้รายชื่อจากข้างบน
     methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,      // สำคัญมาก! ต้องเปิด
   },
 });
 
-app.use(cors({ origin: "http://localhost:5173" }));
+// 👇 3. ตั้งค่า CORS ของ Express (API ปกติ)
+app.use(cors({
+  origin: allowedOrigins, // ใช้รายชื่อจากข้างบน
+  credentials: true,      // สำคัญมาก! ต้องเปิด
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
