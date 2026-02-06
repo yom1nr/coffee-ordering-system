@@ -14,33 +14,26 @@ dotenv.config();
 const app = express();
 const httpServer = createServer(app);
 
-// 👇 1. กำหนด Allowed Origins (ใช้ .filter(Boolean) เพื่อกรองค่าว่างออก ไม่ให้ Error)
+// 👇 1. กำหนดรายชื่อเว็บที่อนุญาตให้เข้าใช้งาน (แก้ตรงนี้จุดเดียว)
 const allowedOrigins = [
-  "http://localhost:5173",
-  "https://coffee-ordering-system-nine.vercel.app",
-  process.env.FRONTEND_URL
-].filter(Boolean);
+  "http://localhost:5173",                       // เครื่องเราเอง
+  "https://coffee-ordering-system-nine.vercel.app", // เว็บ Vercel ของคุณ (เอามาจาก Error Log)
+  "https://coffee-ordering-system.vercel.app"       // เผื่อไว้
+];
 
-// 👇 2. ตั้งค่า CORS สำหรับ Socket.IO
+// 👇 2. ตั้งค่า CORS ของ Socket.IO (Real-time)
 const io = new Server(httpServer, {
   cors: {
-    origin: allowedOrigins,
+    origin: allowedOrigins, // ใช้รายชื่อจากข้างบน
     methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
+    credentials: true,      // สำคัญมาก! ต้องเปิด
   },
 });
 
-// 👇 3. ตั้งค่า CORS สำหรับ Express API
+// 👇 3. ตั้งค่า CORS ของ Express (API ปกติ)
 app.use(cors({
-  origin: (origin, callback) => {
-    // อนุญาตถ้าไม่มี origin (เช่น server-to-server) หรือ origin ตรงกับในรายการ
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
+  origin: allowedOrigins, // ใช้รายชื่อจากข้างบน
+  credentials: true,      // สำคัญมาก! ต้องเปิด
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
@@ -59,6 +52,7 @@ app.use("/api/stats", statsRoutes);
 
 io.on("connection", (socket) => {
   console.log(`Client connected: ${socket.id}`);
+
   socket.on("disconnect", () => {
     console.log(`Client disconnected: ${socket.id}`);
   });
@@ -68,8 +62,9 @@ const PORT = process.env.PORT || 3000;
 
 async function startServer() {
   await connectDatabase();
+
   httpServer.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on http://localhost:${PORT}`);
   });
 }
 
