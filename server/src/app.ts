@@ -14,12 +14,12 @@ dotenv.config();
 const app = express();
 const httpServer = createServer(app);
 
-// 👇 1. ปรับปรุงการรับค่า Origin ให้ยืดหยุ่นและปลอดภัยขึ้น
+// 👇 1. กำหนด Allowed Origins (ใช้ .filter(Boolean) เพื่อกรองค่าว่างออก ไม่ให้ Error)
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://coffee-ordering-system-nine.vercel.app", // ใส่ URL หลักของคุณไว้เลยเพื่อความชัวร์
-  process.env.FRONTEND_URL // ดึงจาก Environment Variable (ถ้ามี)
-].filter(origin => origin); // 🔥 กรองค่า null, undefined ออกเพื่อไม่ให้ CORS พัง
+  "https://coffee-ordering-system-nine.vercel.app",
+  process.env.FRONTEND_URL
+].filter(Boolean);
 
 // 👇 2. ตั้งค่า CORS สำหรับ Socket.IO
 const io = new Server(httpServer, {
@@ -33,8 +33,7 @@ const io = new Server(httpServer, {
 // 👇 3. ตั้งค่า CORS สำหรับ Express API
 app.use(cors({
   origin: (origin, callback) => {
-    // อนุญาตถ้าไม่มี origin (เช่น การเรียกจาก server-to-server หรือเครื่องมือทดสอบ) 
-    // หรือ origin อยู่ในรายการที่อนุญาต
+    // อนุญาตถ้าไม่มี origin (เช่น server-to-server) หรือ origin ตรงกับในรายการ
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -49,7 +48,6 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ... ส่วนที่เหลือเหมือนเดิม ...
 app.get("/api/health", (_req, res) => {
   res.json({ status: "ok", message: "Coffee Shop API is running" });
 });
