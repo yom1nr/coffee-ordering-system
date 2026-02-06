@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Environment Variables (ความลับ ห้ามขึ้น!)
+.env
+.env.local
+.env.*.local
+
+# Build Outputs
+dist/
+build/
+coverage/
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-data/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log
