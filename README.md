@@ -50,7 +50,9 @@ A modern, full-stack coffee ordering application built with **React (Vite)** and
 
 ### System Overview
 
+
 ```mermaid
+
 graph TD
     User["User / Customer"] -->|"HTTPS"| Client["Client (React + Vite)"]
     Admin["Store Manager"] -->|"HTTPS"| Client
@@ -65,6 +67,7 @@ graph TD
 ```
 
 ### Database Schema
+
 
 ```mermaid
 erDiagram
@@ -105,6 +108,8 @@ erDiagram
         decimal sub_total
         json options_json
     }
+
+
 ```
 
 ---
