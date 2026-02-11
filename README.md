@@ -52,15 +52,16 @@ A modern, full-stack coffee ordering application built with **React (Vite)** and
 
 ```mermaid
 graph TD
-    User[User / Customer] -->|HTTPS| Client[Client (React + Vite)]
-    Admin[Store Manager] -->|HTTPS| Client
-    
-    Client -->|REST API| Server[Server (Express + Node.js)]
-    
-    subgraph Backend Services
-        Server -->|Auth & Logic| Controller[Controllers]
-        Controller -->|Query| DB[(TiDB / MySQL Cloud)]
+    User["User / Customer"] -->|"HTTPS"| Client["Client (React + Vite)"]
+    Admin["Store Manager"] -->|"HTTPS"| Client
+
+    Client -->|"REST API"| Server["Server (Express + Node.js)"]
+
+    subgraph Backend["Backend Services"]
+        Server -->|"Auth & Logic"| Controller["Controllers"]
+        Controller -->|"Query"| DB[("TiDB / MySQL Cloud")]
     end
+
 ```
 
 ### Database Schema
