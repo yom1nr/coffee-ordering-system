@@ -1,14 +1,12 @@
 import { useState, useEffect } from "react";
-import { Coffee, ShoppingCart, Search } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Coffee, Search } from "lucide-react";
 import api from "../api/axios";
 import { Product } from "../types";
-import { useCart } from "../context/CartContext";
 import ProductModal from "../components/ProductModal";
 
 export default function Menu() {
-  const { cartCount } = useCart();
   const [products, setProducts] = useState<Product[]>([]);
+
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
@@ -37,27 +35,8 @@ export default function Menu() {
   });
 
   return (
-    <div className="min-h-screen bg-amber-50">
-      {/* Header */}
-      <header className="bg-amber-900 text-amber-50 px-4 sm:px-6 py-4 sticky top-0 z-30 shadow-md">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <h1 className="text-xl font-bold">☕ Menu</h1>
-          <Link
-            to="/cart"
-            className="relative flex items-center gap-1.5 text-sm bg-amber-800 hover:bg-amber-700 px-4 py-2 rounded-xl transition-colors"
-          >
-            <ShoppingCart className="w-5 h-5" />
-            Cart
-            {cartCount > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
-                {cartCount}
-              </span>
-            )}
-          </Link>
-        </div>
-      </header>
-
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+    <div>
+      <div className="max-w-6xl mx-auto space-y-6">
         {/* Search */}
         <div className="relative">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-amber-400" />
@@ -76,11 +55,10 @@ export default function Menu() {
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`whitespace-nowrap px-5 py-2 rounded-full text-sm font-semibold transition-all ${
-                activeCategory === cat
-                  ? "bg-amber-900 text-white shadow-md"
-                  : "bg-white text-amber-800 border border-amber-200 hover:bg-amber-100"
-              }`}
+              className={`whitespace-nowrap px-4 sm:px-5 py-2 rounded-full text-sm font-semibold transition-all ${activeCategory === cat
+                ? "bg-amber-900 text-white shadow-md"
+                : "bg-white text-amber-800 border border-amber-200 hover:bg-amber-100"
+                }`}
             >
               {cat}
             </button>
@@ -96,7 +74,7 @@ export default function Menu() {
             <p className="text-amber-500 text-lg">No items found.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
             {filtered.map((product) => (
               <button
                 key={product.id}
@@ -107,20 +85,20 @@ export default function Menu() {
                   <img
                     src={product.image_url}
                     alt={product.name}
-                    className="w-full h-36 sm:h-44 object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-32 sm:h-36 md:h-44 object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 ) : (
-                  <div className="w-full h-36 sm:h-44 bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center group-hover:from-amber-200 group-hover:to-amber-300 transition-colors">
-                    <Coffee className="w-12 h-12 text-amber-400" />
+                  <div className="w-full h-32 sm:h-36 md:h-44 bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center group-hover:from-amber-200 group-hover:to-amber-300 transition-colors">
+                    <Coffee className="w-10 h-10 sm:w-12 sm:h-12 text-amber-400" />
                   </div>
                 )}
-                <div className="p-3">
-                  <h3 className="font-semibold text-amber-900 text-sm leading-tight line-clamp-2">
+                <div className="p-2.5 sm:p-3">
+                  <h3 className="font-semibold text-amber-900 text-xs sm:text-sm leading-tight line-clamp-2">
                     {product.name}
                   </h3>
-                  <div className="flex items-center justify-between mt-2">
-                    <span className="text-xs text-amber-500">{product.category}</span>
-                    <span className="font-bold text-amber-900">
+                  <div className="flex items-center justify-between mt-1.5 sm:mt-2">
+                    <span className="text-[10px] sm:text-xs text-amber-500">{product.category}</span>
+                    <span className="font-bold text-amber-900 text-sm sm:text-base">
                       ฿{Number(product.base_price).toFixed(0)}
                     </span>
                   </div>

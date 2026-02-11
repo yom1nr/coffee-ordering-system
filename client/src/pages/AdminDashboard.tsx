@@ -174,45 +174,45 @@ export default function AdminDashboard() {
   return (
     <div className="space-y-8 font-sans">
       {/* --- Stat Cards (Premium Section) --- */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
         <div className="bg-gradient-to-br from-stone-800 to-stone-900 rounded-2xl p-6 text-white shadow-xl flex items-center justify-between">
-            <div>
-                <p className="text-stone-400 text-sm font-medium mb-1">Total Revenue</p>
-                <h3 className="text-3xl font-bold font-serif">฿{stats.totalRevenue.toLocaleString()}</h3>
-            </div>
-            <div className="bg-stone-700/50 p-3 rounded-xl">
-                <DollarSign className="w-8 h-8 text-amber-400" />
-            </div>
-        </div>
-        
-        <div className="bg-white rounded-2xl p-6 shadow-lg border border-stone-100 flex items-center justify-between">
-            <div>
-                <p className="text-stone-500 text-sm font-medium mb-1">Total Orders</p>
-                <h3 className="text-3xl font-bold text-stone-800 font-serif">{stats.totalOrders}</h3>
-            </div>
-            <div className="bg-orange-50 p-3 rounded-xl">
-                <TrendingUp className="w-8 h-8 text-orange-600" />
-            </div>
+          <div>
+            <p className="text-stone-400 text-sm font-medium mb-1">Total Revenue</p>
+            <h3 className="text-3xl font-bold font-serif">฿{stats.totalRevenue.toLocaleString()}</h3>
+          </div>
+          <div className="bg-stone-700/50 p-3 rounded-xl">
+            <DollarSign className="w-8 h-8 text-amber-400" />
+          </div>
         </div>
 
         <div className="bg-white rounded-2xl p-6 shadow-lg border border-stone-100 flex items-center justify-between">
-            <div>
-                <p className="text-stone-500 text-sm font-medium mb-1">Best Seller</p>
-                <h3 className="text-xl font-bold text-stone-800 font-serif truncate max-w-[150px]" title={stats.popularMenu}>
-                    {stats.popularMenu}
-                </h3>
-            </div>
-            <div className="bg-yellow-50 p-3 rounded-xl">
-                <Award className="w-8 h-8 text-yellow-600" />
-            </div>
+          <div>
+            <p className="text-stone-500 text-sm font-medium mb-1">Total Orders</p>
+            <h3 className="text-3xl font-bold text-stone-800 font-serif">{stats.totalOrders}</h3>
+          </div>
+          <div className="bg-orange-50 p-3 rounded-xl">
+            <TrendingUp className="w-8 h-8 text-orange-600" />
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl p-6 shadow-lg border border-stone-100 flex items-center justify-between">
+          <div>
+            <p className="text-stone-500 text-sm font-medium mb-1">Best Seller</p>
+            <h3 className="text-xl font-bold text-stone-800 font-serif truncate max-w-[150px]" title={stats.popularMenu}>
+              {stats.popularMenu}
+            </h3>
+          </div>
+          <div className="bg-yellow-50 p-3 rounded-xl">
+            <Award className="w-8 h-8 text-yellow-600" />
+          </div>
         </div>
       </div>
 
       {/* --- Header --- */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
         <div>
-          <h2 className="text-3xl font-bold text-stone-900 flex items-center gap-3 font-serif">
-            <Package className="w-8 h-8 text-stone-700" />
+          <h2 className="text-2xl sm:text-3xl font-bold text-stone-900 flex items-center gap-2 sm:gap-3 font-serif">
+            <Package className="w-6 h-6 sm:w-8 sm:h-8 text-stone-700" />
             Menu Management
           </h2>
           <p className="text-stone-500 text-sm mt-1">
@@ -221,7 +221,7 @@ export default function AdminDashboard() {
         </div>
         <button
           onClick={openAdd}
-          className="flex items-center gap-2 bg-stone-900 hover:bg-stone-800 text-amber-50 px-6 py-3 rounded-xl font-semibold transition-all shadow-md hover:shadow-lg"
+          className="flex items-center justify-center gap-2 bg-stone-900 hover:bg-stone-800 text-amber-50 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold transition-all shadow-md hover:shadow-lg w-full sm:w-auto"
         >
           <Plus className="w-5 h-5" />
           Add New Menu
@@ -254,7 +254,7 @@ export default function AdminDashboard() {
         </select>
       </div>
 
-      {/* --- Table --- */}
+      {/* --- Products --- */}
       {loading ? (
         <div className="text-center py-16 text-stone-500 animate-pulse">Loading premium products...</div>
       ) : filtered.length === 0 ? (
@@ -263,101 +263,156 @@ export default function AdminDashboard() {
           <p className="text-stone-500 text-lg">No products found in the catalog.</p>
         </div>
       ) : (
-        <div className="bg-white rounded-2xl shadow-lg border border-stone-100 overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="bg-stone-50 border-b border-stone-200">
-                  <th className="px-6 py-4 text-xs font-bold text-stone-600 uppercase tracking-wider">Product</th>
-                  <th className="px-6 py-4 text-xs font-bold text-stone-600 uppercase tracking-wider">Category</th>
-                  <th className="px-6 py-4 text-xs font-bold text-stone-600 uppercase tracking-wider">Price</th>
-                  <th className="px-6 py-4 text-xs font-bold text-stone-600 uppercase tracking-wider">Stock</th>
-                  <th className="px-6 py-4 text-xs font-bold text-stone-600 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-4 text-xs font-bold text-stone-600 uppercase tracking-wider text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-stone-100">
-                {filtered.map((product) => (
-                  <tr
-                    key={product.id}
-                    className={`hover:bg-stone-50/50 transition-colors ${
-                      !product.is_active ? "opacity-60 bg-stone-50" : ""
-                    }`}
-                  >
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-4">
-                        {product.image_url ? (
-                          <img
-                            src={product.image_url}
-                            alt={product.name}
-                            className="w-12 h-12 rounded-lg object-cover shadow-sm border border-stone-100"
-                          />
+        <>
+          {/* Mobile Card View */}
+          <div className="md:hidden space-y-3">
+            {filtered.map((product) => (
+              <div
+                key={product.id}
+                className={`bg-white rounded-xl shadow-sm border border-stone-100 p-4 ${!product.is_active ? "opacity-60" : ""}`}
+              >
+                <div className="flex gap-3">
+                  {product.image_url ? (
+                    <img src={product.image_url} alt={product.name} className="w-16 h-16 rounded-lg object-cover flex-shrink-0 shadow-sm" />
+                  ) : (
+                    <div className="w-16 h-16 rounded-lg bg-stone-100 flex items-center justify-center flex-shrink-0">
+                      <Coffee className="w-6 h-6 text-stone-400" />
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <h4 className="font-bold text-stone-800 text-sm">{product.name}</h4>
+                        <span className="text-[10px] bg-orange-100 text-orange-800 px-2 py-0.5 rounded-full font-semibold">{product.category}</span>
+                      </div>
+                      <span className="font-bold text-stone-800 text-sm font-mono whitespace-nowrap">฿{Number(product.base_price).toFixed(0)}</span>
+                    </div>
+                    <div className="flex items-center justify-between mt-2">
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-1">
+                          <Layers className="w-3.5 h-3.5 text-stone-400" />
+                          <span className={`text-xs font-medium ${((product as any).stock ?? 0) < 10 ? 'text-red-600' : 'text-stone-600'}`}>
+                            {(product as any).stock ?? 0}
+                          </span>
+                        </div>
+                        {product.is_active ? (
+                          <span className="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-full">Active</span>
                         ) : (
-                          <div className="w-12 h-12 rounded-lg bg-stone-100 flex items-center justify-center border border-stone-200">
-                            <Coffee className="w-6 h-6 text-stone-400" />
-                          </div>
+                          <button onClick={() => handleReactivate(product.id)} className="text-[10px] bg-stone-200 text-stone-600 px-2 py-0.5 rounded-full font-bold">
+                            Inactive
+                          </button>
                         )}
-                        <div>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <button onClick={() => openEdit(product)} className="p-1.5 text-stone-500 hover:text-amber-600 hover:bg-amber-50 rounded-lg">
+                          <Pencil className="w-3.5 h-3.5" />
+                        </button>
+                        <button onClick={() => handleDelete(product.id, product.name)} className="p-1.5 text-stone-400 hover:text-red-600 hover:bg-red-50 rounded-lg">
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop Table View */}
+          <div className="hidden md:block bg-white rounded-2xl shadow-lg border border-stone-100 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead>
+                  <tr className="bg-stone-50 border-b border-stone-200">
+                    <th className="px-6 py-4 text-xs font-bold text-stone-600 uppercase tracking-wider">Product</th>
+                    <th className="px-6 py-4 text-xs font-bold text-stone-600 uppercase tracking-wider">Category</th>
+                    <th className="px-6 py-4 text-xs font-bold text-stone-600 uppercase tracking-wider">Price</th>
+                    <th className="px-6 py-4 text-xs font-bold text-stone-600 uppercase tracking-wider">Stock</th>
+                    <th className="px-6 py-4 text-xs font-bold text-stone-600 uppercase tracking-wider">Status</th>
+                    <th className="px-6 py-4 text-xs font-bold text-stone-600 uppercase tracking-wider text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-stone-100">
+                  {filtered.map((product) => (
+                    <tr
+                      key={product.id}
+                      className={`hover:bg-stone-50/50 transition-colors ${!product.is_active ? "opacity-60 bg-stone-50" : ""
+                        }`}
+                    >
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-4">
+                          {product.image_url ? (
+                            <img
+                              src={product.image_url}
+                              alt={product.name}
+                              className="w-12 h-12 rounded-lg object-cover shadow-sm border border-stone-100"
+                            />
+                          ) : (
+                            <div className="w-12 h-12 rounded-lg bg-stone-100 flex items-center justify-center border border-stone-200">
+                              <Coffee className="w-6 h-6 text-stone-400" />
+                            </div>
+                          )}
+                          <div>
                             <span className="font-bold text-stone-800 block text-base">{product.name}</span>
                             <span className="text-xs text-stone-400 font-mono">#{product.id}</span>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className="text-xs bg-orange-100 text-orange-800 px-3 py-1 rounded-full font-semibold border border-orange-200">
-                        {product.category}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-sm font-bold text-stone-800 font-mono">
-                      ฿{Number(product.base_price).toFixed(0)}
-                    </td>
-                    <td className="px-6 py-4">
-                        <div className="flex items-center gap-2">
-                            <Layers className="w-4 h-4 text-stone-400" />
-                            <span className={`text-sm font-medium ${
-                                ((product as any).stock ?? 0) < 10 ? 'text-red-600' : 'text-stone-600'
-                            }`}>
-                                {(product as any).stock ?? 0}
-                            </span>
-                        </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      {product.is_active ? (
-                        <span className="flex items-center gap-1.5 text-xs text-emerald-700 font-bold bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100 w-fit">
-                          <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-                          Active
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className="text-xs bg-orange-100 text-orange-800 px-3 py-1 rounded-full font-semibold border border-orange-200">
+                          {product.category}
                         </span>
-                      ) : (
-                        <button
-                          onClick={() => handleReactivate(product.id)}
-                          className="text-xs bg-stone-200 text-stone-600 px-3 py-1 rounded-full font-bold hover:bg-stone-300 transition-colors"
-                        >
-                          Inactive
-                        </button>
-                      )}
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        <button
-                          onClick={() => openEdit(product)}
-                          className="p-2 text-stone-500 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
-                        >
-                          <Pencil className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(product.id, product.name)}
-                          className="p-2 text-stone-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                      </td>
+                      <td className="px-6 py-4 text-sm font-bold text-stone-800 font-mono">
+                        ฿{Number(product.base_price).toFixed(0)}
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-2">
+                          <Layers className="w-4 h-4 text-stone-400" />
+                          <span className={`text-sm font-medium ${((product as any).stock ?? 0) < 10 ? 'text-red-600' : 'text-stone-600'
+                            }`}>
+                            {(product as any).stock ?? 0}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        {product.is_active ? (
+                          <span className="flex items-center gap-1.5 text-xs text-emerald-700 font-bold bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100 w-fit">
+                            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                            Active
+                          </span>
+                        ) : (
+                          <button
+                            onClick={() => handleReactivate(product.id)}
+                            className="text-xs bg-stone-200 text-stone-600 px-3 py-1 rounded-full font-bold hover:bg-stone-300 transition-colors"
+                          >
+                            Inactive
+                          </button>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <button
+                            onClick={() => openEdit(product)}
+                            className="p-2 text-stone-500 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
+                          >
+                            <Pencil className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(product.id, product.name)}
+                            className="p-2 text-stone-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
+        </>
       )}
 
       {/* --- Modal --- */}
@@ -388,68 +443,68 @@ export default function AdminDashboard() {
               )}
 
               <div className="grid grid-cols-2 gap-4">
-                  <div className="col-span-2">
-                    <label className="block text-sm font-bold text-stone-700 mb-2">
-                      Product Name
-                    </label>
-                    <input
-                      type="text"
-                      value={form.name}
-                      onChange={(e) => setForm({ ...form, name: e.target.value })}
-                      className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 bg-stone-50"
-                      placeholder="e.g. Signature Espresso"
-                    />
-                  </div>
+                <div className="col-span-2">
+                  <label className="block text-sm font-bold text-stone-700 mb-2">
+                    Product Name
+                  </label>
+                  <input
+                    type="text"
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 bg-stone-50"
+                    placeholder="e.g. Signature Espresso"
+                  />
+                </div>
 
-                  <div>
-                    <label className="block text-sm font-bold text-stone-700 mb-2">
-                      Category
-                    </label>
-                    <select
-                      value={form.category}
-                      onChange={(e) =>
-                        setForm({ ...form, category: e.target.value })
-                      }
-                      className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white"
-                    >
-                      {CATEGORIES.map((cat) => (
-                        <option key={cat} value={cat}>
-                          {cat}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                <div>
+                  <label className="block text-sm font-bold text-stone-700 mb-2">
+                    Category
+                  </label>
+                  <select
+                    value={form.category}
+                    onChange={(e) =>
+                      setForm({ ...form, category: e.target.value })
+                    }
+                    className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white"
+                  >
+                    {CATEGORIES.map((cat) => (
+                      <option key={cat} value={cat}>
+                        {cat}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-                  <div>
-                    <label className="block text-sm font-bold text-stone-700 mb-2">
-                      Stock
-                    </label>
-                    <input
-                      type="number"
-                      min="0"
-                      value={form.stock}
-                      onChange={(e) => setForm({ ...form, stock: e.target.value })}
-                      className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 bg-stone-50"
-                      placeholder="100"
-                    />
-                  </div>
+                <div>
+                  <label className="block text-sm font-bold text-stone-700 mb-2">
+                    Stock
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={form.stock}
+                    onChange={(e) => setForm({ ...form, stock: e.target.value })}
+                    className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 bg-stone-50"
+                    placeholder="100"
+                  />
+                </div>
 
-                  <div>
-                    <label className="block text-sm font-bold text-stone-700 mb-2">
-                      Price (฿)
-                    </label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      min="0"
-                      value={form.base_price}
-                      onChange={(e) =>
-                        setForm({ ...form, base_price: e.target.value })
-                      }
-                      className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 bg-stone-50"
-                      placeholder="0.00"
-                    />
-                  </div>
+                <div>
+                  <label className="block text-sm font-bold text-stone-700 mb-2">
+                    Price (฿)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    value={form.base_price}
+                    onChange={(e) =>
+                      setForm({ ...form, base_price: e.target.value })
+                    }
+                    className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 bg-stone-50"
+                    placeholder="0.00"
+                  />
+                </div>
               </div>
 
               <div>

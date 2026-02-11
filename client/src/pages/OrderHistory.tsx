@@ -103,8 +103,8 @@ export default function OrderHistory() {
     if (!printWindow) return;
 
     const itemsHtml = order.items.map(item => {
-        const opts = parseOptions(item.options_json).map(o => o.name).join(', ');
-        return `
+      const opts = parseOptions(item.options_json).map(o => o.name).join(', ');
+      return `
             <div style="margin-bottom: 8px; border-bottom: 1px dashed #ddd; padding-bottom: 8px;">
                 <div style="display: flex; justify-content: space-between; font-weight: bold;">
                     <span>${item.product_name} x${item.quantity}</span>
@@ -165,19 +165,16 @@ export default function OrderHistory() {
   };
 
   return (
-    <div className="min-h-screen bg-orange-50 font-sans">
-      <header className="bg-stone-900 text-amber-50 px-4 sm:px-6 py-4 sticky top-0 z-30 shadow-xl">
-        <div className="max-w-3xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Link to="/" className="p-2 hover:bg-stone-800 rounded-xl transition-colors text-amber-500">
-              <ArrowLeft className="w-5 h-5" />
-            </Link>
-            <h1 className="text-xl font-bold font-serif tracking-wide">My Orders</h1>
-          </div>
-        </div>
-      </header>
+    <div className="font-sans">
+      {/* Header */}
+      <div className="flex items-center gap-3 mb-4 sm:mb-6">
+        <Link to="/" className="p-2 hover:bg-stone-200 rounded-xl transition-colors text-amber-700">
+          <ArrowLeft className="w-5 h-5" />
+        </Link>
+        <h1 className="text-xl sm:text-2xl font-bold font-serif tracking-wide text-stone-900">My Orders</h1>
+      </div>
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+      <div className="max-w-3xl mx-auto">
         {loading && orders.length === 0 ? (
           <div className="text-center py-20 text-stone-500 animate-pulse">Loading your coffee history...</div>
         ) : orders.length === 0 ? (
@@ -205,15 +202,15 @@ export default function OrderHistory() {
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="text-base font-bold text-stone-800">
-                            Order #{order.id}
+                          Order #{order.id}
                         </span>
                         {/* Print Button */}
-                        <button 
-                            onClick={() => handlePrint(order)}
-                            className="p-1.5 bg-white border border-stone-200 rounded-lg text-stone-500 hover:text-stone-900 hover:border-stone-400 transition-colors"
-                            title="Print Receipt"
+                        <button
+                          onClick={() => handlePrint(order)}
+                          className="p-1.5 bg-white border border-stone-200 rounded-lg text-stone-500 hover:text-stone-900 hover:border-stone-400 transition-colors"
+                          title="Print Receipt"
                         >
-                            <Printer className="w-4 h-4" />
+                          <Printer className="w-4 h-4" />
                         </button>
                       </div>
                       <p className="text-xs text-stone-500 mt-1 flex items-center gap-1">
@@ -276,14 +273,14 @@ export default function OrderHistory() {
                   {/* Footer */}
                   <div className="px-6 py-4 bg-stone-50 border-t border-stone-100 flex justify-between items-center">
                     <div className="flex items-center gap-2 text-stone-500 text-xs">
-                        <Receipt className="w-4 h-4" />
-                        <span>Included VAT</span>
+                      <Receipt className="w-4 h-4" />
+                      <span>Included VAT</span>
                     </div>
                     <div className="flex items-center gap-3">
-                        <span className="text-sm text-stone-500 font-medium">Total Amount</span>
-                        <span className="text-xl font-bold text-stone-900 font-serif">
+                      <span className="text-sm text-stone-500 font-medium">Total Amount</span>
+                      <span className="text-xl font-bold text-stone-900 font-serif">
                         ฿{Number(order.total_price).toFixed(0)}
-                        </span>
+                      </span>
                     </div>
                   </div>
                 </div>

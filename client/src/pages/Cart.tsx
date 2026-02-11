@@ -37,7 +37,7 @@ export default function Cart() {
     try {
       // ส่งชื่อ guestName ไปด้วย (ถ้าล็อกอินแล้วมันจะส่ง token ไปแทน)
       await checkout(guestName);
-      
+
       if (user) {
         navigate("/orders");
       } else {
@@ -52,31 +52,29 @@ export default function Cart() {
   };
 
   return (
-    <div className="min-h-screen bg-orange-50 font-sans">
+    <div className="font-sans">
       {/* Header */}
-      <header className="bg-stone-900 text-amber-50 px-4 sm:px-6 py-4 sticky top-0 z-30 shadow-xl">
-        <div className="max-w-2xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Link
-              to="/menu"
-              className="p-2 hover:bg-stone-800 rounded-xl transition-colors text-amber-500"
-            >
-              <ArrowLeft className="w-5 h-5" />
-            </Link>
-            <h1 className="text-xl font-bold font-serif tracking-wide">Your Cart</h1>
-          </div>
-          {cartItems.length > 0 && (
-            <button
-              onClick={clearCart}
-              className="text-sm text-stone-400 hover:text-red-400 transition-colors font-medium"
-            >
-              Clear All
-            </button>
-          )}
+      <div className="flex items-center justify-between mb-4 sm:mb-6">
+        <div className="flex items-center gap-3">
+          <Link
+            to="/"
+            className="p-2 hover:bg-stone-200 rounded-xl transition-colors text-amber-700"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </Link>
+          <h1 className="text-xl sm:text-2xl font-bold font-serif tracking-wide text-stone-900">Your Cart</h1>
         </div>
-      </header>
+        {cartItems.length > 0 && (
+          <button
+            onClick={clearCart}
+            className="text-sm text-stone-400 hover:text-red-500 transition-colors font-medium"
+          >
+            Clear All
+          </button>
+        )}
+      </div>
 
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
+      <div className="max-w-2xl mx-auto">
         {cartItems.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-3xl shadow-sm border border-stone-100">
             <ShoppingCart className="w-20 h-20 text-stone-200 mx-auto mb-6" />
@@ -119,31 +117,31 @@ export default function Cart() {
                   {/* Details */}
                   <div className="flex-1 min-w-0 flex flex-col justify-between">
                     <div>
-                        <div className="flex items-start justify-between gap-2">
+                      <div className="flex items-start justify-between gap-2">
                         <h3 className="font-bold text-stone-800 text-lg leading-tight font-serif">
-                            {item.name}
+                          {item.name}
                         </h3>
                         <button
-                            onClick={() => removeFromCart(item.cartId)}
-                            className="p-2 text-stone-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0"
+                          onClick={() => removeFromCart(item.cartId)}
+                          className="p-2 text-stone-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0"
                         >
-                            <Trash2 className="w-4 h-4" />
+                          <Trash2 className="w-4 h-4" />
                         </button>
-                        </div>
+                      </div>
 
-                        {/* Options */}
-                        <div className="flex flex-wrap gap-1.5 mt-2">
+                      {/* Options */}
+                      <div className="flex flex-wrap gap-1.5 mt-2">
                         {item.selectedOptions.map((opt, i) => (
-                            <span
+                          <span
                             key={i}
                             className="text-[10px] uppercase font-bold tracking-wide bg-stone-100 text-stone-600 px-2 py-1 rounded-md"
-                            >
+                          >
                             {opt.group === "Sweetness"
-                                ? `Sweet ${opt.name}`
-                                : opt.name}
-                            </span>
+                              ? `Sweet ${opt.name}`
+                              : opt.name}
+                          </span>
                         ))}
-                        </div>
+                      </div>
                     </div>
 
                     {/* Quantity & Price */}
@@ -177,10 +175,10 @@ export default function Cart() {
             {/* Summary & Checkout Section */}
             <div className="bg-white rounded-3xl shadow-lg border border-stone-100 p-6 space-y-5">
               <h3 className="font-bold text-stone-800 font-serif text-xl flex items-center gap-2">
-                  <Utensils className="w-5 h-5 text-amber-500" />
-                  Order Summary
+                <Utensils className="w-5 h-5 text-amber-500" />
+                Order Summary
               </h3>
-              
+
               <div className="space-y-3 text-sm border-b border-stone-100 pb-5">
                 <div className="flex justify-between text-stone-600">
                   <span>Subtotal ({cartCount} items)</span>
@@ -205,35 +203,34 @@ export default function Cart() {
 
               {/* Guest Name Input (Show only if NOT logged in) */}
               {!user && (
-                  <div className="space-y-2">
-                      <label className="block text-sm font-bold text-stone-700 ml-1">
-                          Who is this order for? <span className="text-red-500">*</span>
-                      </label>
-                      <div className="relative">
-                          <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-400" />
-                          <input 
-                              type="text" 
-                              value={guestName}
-                              onChange={(e) => {
-                                  setGuestName(e.target.value);
-                                  if(error) setError("");
-                              }}
-                              placeholder="Your Name or Table No. (e.g. John / Table 5)"
-                              className="w-full pl-11 pr-4 py-3.5 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white transition-all font-medium text-stone-800 placeholder-stone-400"
-                          />
-                      </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-bold text-stone-700 ml-1">
+                    Who is this order for? <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-400" />
+                    <input
+                      type="text"
+                      value={guestName}
+                      onChange={(e) => {
+                        setGuestName(e.target.value);
+                        if (error) setError("");
+                      }}
+                      placeholder="Your Name or Table No. (e.g. John / Table 5)"
+                      className="w-full pl-11 pr-4 py-3.5 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white transition-all font-medium text-stone-800 placeholder-stone-400"
+                    />
                   </div>
+                </div>
               )}
 
               {/* Checkout Button */}
               <button
                 onClick={handleCheckout}
                 disabled={checkingOut}
-                className={`w-full flex items-center justify-center gap-2 font-bold py-4 rounded-xl text-lg transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 ${
-                    checkingOut 
-                        ? "bg-stone-300 cursor-not-allowed text-stone-500"
-                        : "bg-gradient-to-r from-stone-900 to-stone-800 hover:from-black hover:to-stone-900 text-white"
-                }`}
+                className={`w-full flex items-center justify-center gap-2 font-bold py-4 rounded-xl text-lg transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 ${checkingOut
+                    ? "bg-stone-300 cursor-not-allowed text-stone-500"
+                    : "bg-gradient-to-r from-stone-900 to-stone-800 hover:from-black hover:to-stone-900 text-white"
+                  }`}
               >
                 {checkingOut ? (
                   <span className="inline-block w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
