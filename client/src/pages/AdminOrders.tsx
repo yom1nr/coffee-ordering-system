@@ -22,17 +22,18 @@ interface OrderItem {
 
 interface Order {
   id: number;
-  user_id: number;
-  username: string;
-  status: "pending" | "approved" | "cancelled";
+  user_id: number | null;
+  username: string | null;
+  display_name: string;
+  status: "pending" | "approved" | "completed" | "cancelled";
   total_price: number;
   created_at: string;
   items: OrderItem[];
 }
 
-type StatusFilter = "all" | "pending" | "approved" | "cancelled";
+type StatusFilter = "all" | "pending" | "approved" | "completed" | "cancelled";
 
-const statusConfig = {
+const statusConfig: Record<Order["status"], { label: string; color: string; cardBorder: string; icon: typeof Clock }> = {
   pending: {
     label: "Pending",
     color: "bg-yellow-100 text-yellow-700 border-yellow-200",
@@ -43,6 +44,12 @@ const statusConfig = {
     label: "Approved",
     color: "bg-green-100 text-green-700 border-green-200",
     cardBorder: "border-l-green-400",
+    icon: CheckCircle,
+  },
+  completed: {
+    label: "Completed",
+    color: "bg-emerald-100 text-emerald-700 border-emerald-200",
+    cardBorder: "border-l-emerald-400",
     icon: CheckCircle,
   },
   cancelled: {
@@ -156,17 +163,15 @@ export default function AdminOrders() {
           <button
             key={tab.key}
             onClick={() => setFilter(tab.key)}
-            className={`whitespace-nowrap px-4 py-2 rounded-full text-sm font-semibold transition-all ${
-              filter === tab.key
-                ? "bg-amber-900 text-white shadow-md"
-                : "bg-white text-amber-800 border border-amber-200 hover:bg-amber-100"
-            }`}
+            className={`whitespace-nowrap px-4 py-2 rounded-full text-sm font-semibold transition-all ${filter === tab.key
+              ? "bg-amber-900 text-white shadow-md"
+              : "bg-white text-amber-800 border border-amber-200 hover:bg-amber-100"
+              }`}
           >
             {tab.label}
             <span
-              className={`ml-1.5 inline-flex items-center justify-center w-5 h-5 rounded-full text-xs ${
-                filter === tab.key ? "bg-amber-700 text-amber-100" : "bg-amber-100 text-amber-700"
-              }`}
+              className={`ml-1.5 inline-flex items-center justify-center w-5 h-5 rounded-full text-xs ${filter === tab.key ? "bg-amber-700 text-amber-100" : "bg-amber-100 text-amber-700"
+                }`}
             >
               {tab.count}
             </span>

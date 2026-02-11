@@ -6,13 +6,14 @@ import { PoolConnection } from "mysql2/promise";
 
 interface OrderRow extends RowDataPacket {
   id: number;
-  user_id: number;
+  user_id: number | null;
+  customer_name: string | null;
   status: string;
-  slip_url: string | null;
   total_price: number;
   created_at: string;
   updated_at: string;
   username?: string;
+  display_name?: string;
 }
 
 interface OrderItemRow extends RowDataPacket {
@@ -38,7 +39,7 @@ export async function createOrder(req: Request, res: Response): Promise<void> {
   let conn: PoolConnection | undefined;
   try {
     const user = req.user as jwt.JwtPayload | undefined;
-    const userId = user ? user.id : 9999;
+    const userId = user ? user.id : null;
 
     const { items, customerName } = req.body as { items: CartItemPayload[], customerName?: string };
 
@@ -49,14 +50,14 @@ export async function createOrder(req: Request, res: Response): Promise<void> {
 
     const pool = getPool();
     conn = await pool.getConnection();
-    
+
     await conn.beginTransaction();
 
     let totalPrice = 0;
 
     for (const item of items) {
       const [productRows] = await conn.query<RowDataPacket[]>(
-        "SELECT stock, name FROM products WHERE id = ?", 
+        "SELECT stock, name FROM products WHERE id = ?",
         [item.id]
       );
 
@@ -71,18 +72,18 @@ export async function createOrder(req: Request, res: Response): Promise<void> {
       }
 
       await conn.query(
-        "UPDATE products SET stock = stock - ? WHERE id = ?", 
+        "UPDATE products SET stock = stock - ? WHERE id = ?",
         [item.quantity, item.id]
       );
 
       totalPrice += item.totalPrice;
     }
 
-    const note = userId === 9999 ? (customerName || "Walk-in Guest") : null;
+    const guestName = !userId ? (customerName || "Walk-in Guest") : null;
 
     const [orderResult] = await conn.query<ResultSetHeader>(
-      "INSERT INTO orders (user_id, status, total_price, slip_url) VALUES (?, 'pending', ?, ?)",
-      [userId, totalPrice, note]
+      "INSERT INTO orders (user_id, customer_name, status, total_price) VALUES (?, ?, 'pending', ?)",
+      [userId, guestName, totalPrice]
     );
     const orderId = orderResult.insertId;
 
@@ -112,7 +113,7 @@ export async function createOrder(req: Request, res: Response): Promise<void> {
   } catch (error: any) {
     if (conn) await conn.rollback();
     console.error("Create order error:", error);
-    
+
     res.status(400).json({ message: error.message || "Internal server error." });
   } finally {
     if (conn) conn.release();
@@ -154,9 +155,9 @@ export async function getAllOrders(req: Request, res: Response): Promise<void> {
     const pool = getPool();
 
     const [orders] = await pool.query<OrderRow[]>(
-      `SELECT o.*, u.username
+      `SELECT o.*, u.username, COALESCE(u.username, o.customer_name, 'Guest') AS display_name
        FROM orders o
-       JOIN users u ON o.user_id = u.id
+       LEFT JOIN users u ON o.user_id = u.id
        ORDER BY o.created_at DESC`
     );
 

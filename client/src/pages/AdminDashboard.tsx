@@ -87,7 +87,7 @@ export default function AdminDashboard() {
     setForm({
       name: product.name,
       base_price: String(product.base_price),
-      stock: product.hasOwnProperty('stock') ? String((product as any).stock ?? 100) : "100", // กรณีไม่มี stock ใน type Product
+      stock: product.hasOwnProperty('stock') ? String(product.stock ?? 100) : "100", // กรณีไม่มี stock ใน type Product
       image_url: product.image_url || "",
       category: product.category,
     });
@@ -291,8 +291,8 @@ export default function AdminDashboard() {
                       <div className="flex items-center gap-3">
                         <div className="flex items-center gap-1">
                           <Layers className="w-3.5 h-3.5 text-stone-400" />
-                          <span className={`text-xs font-medium ${((product as any).stock ?? 0) < 10 ? 'text-red-600' : 'text-stone-600'}`}>
-                            {(product as any).stock ?? 0}
+                          <span className={`text-xs font-medium ${(product.stock ?? 0) < 10 ? 'text-red-600' : 'text-stone-600'}`}>
+                            {product.stock ?? 0}
                           </span>
                         </div>
                         {product.is_active ? (
@@ -369,9 +369,9 @@ export default function AdminDashboard() {
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
                           <Layers className="w-4 h-4 text-stone-400" />
-                          <span className={`text-sm font-medium ${((product as any).stock ?? 0) < 10 ? 'text-red-600' : 'text-stone-600'
+                          <span className={`text-sm font-medium ${(product.stock ?? 0) < 10 ? 'text-red-600' : 'text-stone-600'
                             }`}>
-                            {(product as any).stock ?? 0}
+                            {product.stock ?? 0}
                           </span>
                         </div>
                       </td>

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://coffee-ordering-system.onrender.com",
+  baseURL: import.meta.env.VITE_API_URL || "https://coffee-ordering-system-qcm3.onrender.com",
   headers: {
     "Content-Type": "application/json",
   },

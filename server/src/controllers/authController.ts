@@ -36,7 +36,8 @@ export async function register(req: Request, res: Response): Promise<void> {
     }
 
     const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
-    const userRole = role === "admin" ? "admin" : "customer";
+    // Security: Always register as 'customer'. Admin accounts must be created directly in DB.
+    const userRole = "customer";
 
     const [result] = await pool.query<ResultSetHeader>(
       "INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)",

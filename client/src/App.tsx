@@ -8,6 +8,7 @@ import Menu from "./pages/Menu";
 import Cart from "./pages/Cart";
 import OrderHistory from "./pages/OrderHistory";
 import AdminOrdersLayout from "./pages/AdminOrdersLayout";
+import NotFound from "./pages/NotFound";
 import {
   LogOut,
   LayoutDashboard,
@@ -213,6 +214,7 @@ function App() {
             <Route path="/admin/orders" element={<ProtectedRoute><AdminOrdersLayout /></ProtectedRoute>} />
             <Route path="/login" element={<GuestRoute><LoginPage /></GuestRoute>} />
             <Route path="/register" element={<GuestRoute><RegisterPage /></GuestRoute>} />
+            <Route path="*" element={<MainLayout><NotFound /></MainLayout>} />
           </Routes>
         </CartProvider>
       </AuthProvider>
