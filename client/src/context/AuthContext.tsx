@@ -24,10 +24,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (token) {
       const storedUser = localStorage.getItem('user');
-      if (storedUser) setUser(JSON.parse(storedUser));
+      
+      // 1. เช็คให้ชัวร์ว่าไม่ใช่ string ขยะที่เขียนว่า "undefined" หรือ "null"
+      if (storedUser && storedUser !== 'undefined' && storedUser !== 'null') {
+        try {
+          // 2. ลองแปลงเป็น JSON
+          setUser(JSON.parse(storedUser));
+        } catch (error) {
+          // 3. ถ้าแปลงแล้วพัง (แปลว่ามีขยะค้างในเครื่อง) ให้เตะทิ้งทันที! แอปจะได้ไม่จอขาว
+          console.error("Failed to parse user data from localStorage", error);
+          localStorage.removeItem('user'); 
+        }
+      }
+      
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     }
   }, [token]);
+
 
   const login = (newToken: string, newUser: User) => {
     setToken(newToken);
