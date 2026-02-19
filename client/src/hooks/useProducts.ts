@@ -40,7 +40,7 @@ export function useProducts(options: UseProductsOptions = {}): UseProductsReturn
 
             const res = await api.get("/api/products", { params });
 
-            const data = res.data;
+            const data = res.data.data;
             setProducts(data.data?.products || data.products || []);
             if (data.meta) setMeta(data.meta);
         } catch (err: any) {
