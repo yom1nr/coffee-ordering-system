@@ -32,23 +32,32 @@ export function useProducts(options: UseProductsOptions = {}): UseProductsReturn
     const fetchProducts = useCallback(async () => {
         setLoading(true);
         setError(null);
-        try {
+                try {
             const params: Record<string, any> = {};
             if (options.category) params.category = options.category;
             if (options.page) params.page = options.page;
             if (options.limit) params.limit = options.limit;
 
             const res = await api.get("/api/products", { params });
+            const payload = res.data.data; // แกะกล่องชั้นแรก
 
-            const data = res.data.data;
-            setProducts(data.data?.products || data.products || []);
-            if (data.meta) setMeta(data.meta);
+            // ✅ เช็คเลยว่าข้อมูลที่ได้มา เป็น Array หรือเปล่า?
+            if (Array.isArray(payload)) {
+                // ถ้าเป็นลิสต์กาแฟตรงๆ ก็จับยัดใส่ State เลย
+                setProducts(payload);
+            } else {
+                // ถ้า Backend ห่อมาในกล่อง Object ที่มีคำว่า products หรือ meta ซ้อนอีกชั้น
+                setProducts(payload?.products || payload?.data?.products || []);
+                if (payload?.meta) setMeta(payload.meta);
+            }
+            
         } catch (err: any) {
             const msg = err.response?.data?.message || err.message || "Failed to load products.";
             setError(msg);
         } finally {
             setLoading(false);
         }
+
     }, [options.category, options.page, options.limit]);
 
     useEffect(() => {
