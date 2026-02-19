@@ -21,7 +21,8 @@ export default function LoginPage() {
 
     try {
       const res = await api.post("/api/auth/login", { username, password });
-      login(res.data.token, res.data.user);
+      const { token, user } = res.data.data; 
+      login(token, user);
       navigate("/");
     } catch (err: any) {
       setError(err.response?.data?.message || "Login failed. Please try again.");
