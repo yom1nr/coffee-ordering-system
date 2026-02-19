@@ -8,13 +8,40 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: coffee_db
-      MYSQL_USER: coffee_user        
+      MYSQL_USER: coffee_user
       MYSQL_PASSWORD: coffee_password
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./server/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: coffee_server
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: coffee_user
+      DB_PASSWORD: coffee_password
+      DB_NAME: coffee_db
+      JWT_SECRET: ${JWT_SECRET:-change_this_in_production}
+      CORS_ORIGINS: http://localhost:5173
+    depends_on:
+      mysql:
+        condition: service_healthy
 
 volumes:
   mysql_data:

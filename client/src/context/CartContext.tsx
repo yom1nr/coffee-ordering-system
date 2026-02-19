@@ -8,7 +8,6 @@ interface CartContextType {
   removeFromCart: (cartId: string) => void;
   updateQuantity: (cartId: string, delta: number) => void;
   clearCart: () => void;
-  // ✅ แก้บรรทัดนี้: รับ customerName (optional string)
   checkout: (customerName?: string) => Promise<{ id: number; total_price: number; status: string }>;
   cartTotal: number;
   cartCount: number;
@@ -24,7 +23,7 @@ function generateCartId(productId: number, options: ProductOption[]): string {
   return `${productId}_${optionKey}`;
 }
 
-function calcItemTotal(basePrice: number, options: ProductOption[], quantity: number): number {
+export function calcItemTotal(basePrice: number, options: ProductOption[], quantity: number): number {
   const optionsPrice = options.reduce((sum, o) => sum + o.price, 0);
   return (basePrice + optionsPrice) * quantity;
 }
@@ -49,14 +48,14 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
           return prev.map((item) =>
             item.cartId === cartId
               ? {
-                  ...item,
-                  quantity: item.quantity + quantity,
-                  totalPrice: calcItemTotal(
-                    item.base_price,
-                    item.selectedOptions,
-                    item.quantity + quantity
-                  ),
-                }
+                ...item,
+                quantity: item.quantity + quantity,
+                totalPrice: calcItemTotal(
+                  item.base_price,
+                  item.selectedOptions,
+                  item.quantity + quantity
+                ),
+              }
               : item
           );
         }
@@ -108,13 +107,13 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       base_price: item.base_price,
       totalPrice: item.totalPrice,
     }));
-    
+
     // ส่งทั้ง items และ customerName (ถ้ามี)
-    const res = await api.post("/api/orders", { 
-        items: payload,
-        customerName 
+    const res = await api.post("/api/orders", {
+      items: payload,
+      customerName
     });
-    
+
     setCartItems([]);
     return res.data.order;
   }, [cartItems]);
