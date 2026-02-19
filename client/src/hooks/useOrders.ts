@@ -42,7 +42,7 @@ export function useMyOrders(): UseOrdersReturn {
         setError(null);
         try {
             const res = await api.get("/api/orders/my-orders");
-            const data = res.data;
+            const data = res.data.data;
             setOrders(data.data?.orders || data.orders || []);
         } catch (err: any) {
             const msg = err.response?.data?.message || err.message || "Failed to load orders.";
