@@ -38,16 +38,11 @@ export function useProducts(options: UseProductsOptions = {}): UseProductsReturn
             if (options.page) params.page = options.page;
             if (options.limit) params.limit = options.limit;
 
-            const res = await api.get("/api/products", { params });
-            
-            // 🔍 แกะกล่องชั้นแรกก่อน (res.data คือก้อน JSON ทั้งก้อนที่ Server ส่งมา)
-            const responseData = res.data;
-            
-            // 🎯 ท่าดึงข้อมูลแบบเจาะทะลวง 100% (หา Array ให้เจอ)
+            const res = await api.get("/api/products", { params });            
+            const responseData = res.data
             let productList = [];
             
             if (responseData?.data?.products) {
-                // เคสนี้แหละครับ! ตรงกับ JSON ของคุณเป๊ะๆ
                 productList = responseData.data.products; 
             } else if (Array.isArray(responseData?.data)) {
                 productList = responseData.data;
