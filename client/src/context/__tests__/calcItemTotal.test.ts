@@ -14,7 +14,7 @@ describe("calcItemTotal", () => {
             { name: "Size L", price: 10, group: "size" },
         ];
         expect(calcItemTotal(50, options, 3)).toBe(180); // (50 + 10) * 3
-    });
+    }); 
 
     // ─── Multiple Options (extra) ───
     it("correctly sums prices across multiple options", () => {
