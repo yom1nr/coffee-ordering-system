@@ -6,12 +6,12 @@ const orderItemSchema = z.object({
     selectedOptions: z.array(
         z.object({
             name: z.string(),
-            price: z.number(),
+            price: z.coerce.number(),
             group: z.string(),
         })
     ).default([]),
-    base_price: z.number().nonnegative(),
-    totalPrice: z.number().nonnegative(),
+    base_price: z.coerce.number().nonnegative(),
+    totalPrice: z.coerce.number().nonnegative(),
 });
 
 export const createOrderSchema = z.object({
