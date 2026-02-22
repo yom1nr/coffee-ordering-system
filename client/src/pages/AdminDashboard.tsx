@@ -52,7 +52,7 @@ export default function AdminDashboard() {
       const res = await api.get("/api/products", {
         params: { includeInactive: "true" },
       });
-      setProducts(res.data.products);
+      setProducts(res.data.data?.products || []);
     } catch {
       console.error("Failed to fetch products");
     } finally {
@@ -64,7 +64,7 @@ export default function AdminDashboard() {
   const fetchStats = async () => {
     try {
       const res = await api.get("/api/stats");
-      setStats(res.data);
+      setStats(res.data.data || res.data);
     } catch {
       console.warn("Stats API not ready yet (Skipping)");
     }

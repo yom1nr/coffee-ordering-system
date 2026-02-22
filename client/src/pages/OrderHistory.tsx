@@ -62,7 +62,7 @@ export default function OrderHistory() {
     try {
       if (!isBackground) setLoading(true);
       const res = await api.get("/api/orders/my-orders");
-      setOrders(res.data.orders);
+      setOrders(res.data.data?.orders || []);
     } catch {
       console.error("Failed to fetch orders");
     } finally {

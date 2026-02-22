@@ -70,7 +70,7 @@ export default function AdminOrders() {
   const fetchOrders = useCallback(async () => {
     try {
       const res = await api.get("/api/orders");
-      setOrders(res.data.orders);
+      setOrders(res.data.data?.orders || []);
       setLastRefresh(new Date());
     } catch {
       console.error("Failed to fetch orders");

@@ -34,7 +34,7 @@ export default function RegisterPage() {
 
     try {
       const res = await api.post("/api/auth/register", { username, password, role });
-      login(res.data.token, res.data.user);
+      login(res.data.data.token, res.data.data.user);
       navigate("/");
     } catch (err: any) {
       setError(err.response?.data?.message || "Registration failed. Please try again.");

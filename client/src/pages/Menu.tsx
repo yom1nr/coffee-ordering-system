@@ -16,7 +16,7 @@ export default function Menu() {
     const fetchProducts = async () => {
       try {
         const res = await api.get("/api/products");
-        setProducts(res.data.products.filter((p: Product) => p.is_active));
+        setProducts((res.data.data?.products || []).filter((p: Product) => p.is_active));
       } catch {
         console.error("Failed to fetch products");
       } finally {

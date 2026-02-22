@@ -115,7 +115,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     });
 
     setCartItems([]);
-    return res.data.order;
+    return res.data.data.order;
   }, [cartItems]);
 
   const cartTotal = useMemo(
